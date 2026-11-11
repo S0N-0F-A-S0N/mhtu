@@ -256,10 +256,9 @@ class LoopApproximation:
         fverts = indices.copy().reshape((ilen, 3))
         uvverts = fverts.copy()
 
-        for elem in fverts:
-            for i,v in enumerate(elem):
-                if v >= mx:
-                    elem[i] = ov[v-mx][0]
+        mask = fverts >= mx
+        if mask.any():
+            fverts[mask] = ov[fverts[mask] - mx, 0]
         return fverts, uvverts
 
     def markSeam(self):
